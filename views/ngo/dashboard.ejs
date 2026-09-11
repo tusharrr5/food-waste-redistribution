@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard — FoodShare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #eff6ff; color: #1a1a1a; }
+
+        .navbar {
+            background: #1e40af; padding: 0 32px; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .navbar .logo { color: #fff; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar .logo span { color: #93c5fd; }
+        .navbar-right { display: flex; align-items: center; gap: 20px; }
+        .navbar-right span { color: #bfdbfe; font-size: 14px; }
+        .navbar-right a {
+            color: #bfdbfe; text-decoration: none; font-size: 14px;
+            border: 1px solid #93c5fd; padding: 5px 14px; border-radius: 4px;
+        }
+        .navbar-right a:hover { background: #1e3a8a; }
+
+        .main { max-width: 1000px; margin: 36px auto; padding: 0 20px; }
+
+        .page-title { font-size: 26px; font-weight: bold; color: #1e40af; margin-bottom: 6px; }
+        .page-sub { color: #6b7280; font-size: 15px; margin-bottom: 28px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: #fff; border-radius: 10px; padding: 24px 20px;
+            text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+        .stat-card .num { font-size: 38px; font-weight: bold; color: #1e40af; }
+        .stat-card .label { font-size: 13px; color: #6b7280; margin-top: 4px; }
+
+        .action-card {
+            background: #fff; border-radius: 10px; padding: 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+        .action-card h3 { font-size: 18px; color: #1e40af; margin-bottom: 14px; }
+        .action-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-block; padding: 11px 24px; border-radius: 6px;
+            font-size: 15px; font-weight: bold; text-decoration: none;
+            cursor: pointer; border: none; transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.88; }
+        .btn-blue { background: #1e40af; color: #fff; }
+        .btn-outline-blue {
+            background: transparent; color: #1e40af; border: 2px solid #1e40af;
+        }
+
+        @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/ngo/dashboard" class="logo">Food<span>Share</span></a>
+        <div class="navbar-right">
+            <span>🤝 <%= user.name %> (NGO)</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="page-title">Welcome, <%= user.name %>! 🤝</div>
+        <div class="page-sub">Browse and manage food donations available for pickup.</div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="num"><%= stats.available %></div>
+                <div class="label">Available Donations</div>
+            </div>
+            <div class="stat-card">
+                <div class="num"><%= stats.myAccepted %></div>
+                <div class="label">My Active Pickups</div>
+            </div>
+            <div class="stat-card">
+                <div class="num"><%= stats.myDelivered %></div>
+                <div class="label">Delivered by Me</div>
+            </div>
+        </div>
+
+        <div class="action-card">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                <a href="/ngo/donations" class="btn btn-blue">🍱 Browse Available Donations</a>
+                <a href="/ngo/donations?filter=mine" class="btn btn-outline-blue">📋 My Accepted Donations</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

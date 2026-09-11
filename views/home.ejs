@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodShare — Food Waste Redistribution System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0fdf4;
+            color: #1a1a1a;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: #166534;
+            padding: 0 40px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .navbar .logo span { color: #86efac; }
+        .navbar-links a {
+            color: #d1fae5;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .navbar-links a:hover { color: #fff; }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #166534 0%, #15803d 50%, #16a34a 100%);
+            color: #fff;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .hero h1 {
+            font-size: 44px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .hero h1 span { color: #86efac; }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 36px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; }
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+        .btn:hover { transform: translateY(-2px); opacity: 0.92; }
+        .btn-white { background: #fff; color: #166534; }
+        .btn-outline { background: transparent; color: #fff; border: 2px solid #fff; }
+        .btn-green { background: #16a34a; color: #fff; }
+        .btn-red { background: #dc2626; color: #fff; }
+        .btn-blue { background: #2563eb; color: #fff; }
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 13px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* ===== STATS SECTION ===== */
+        .stats-section {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding: 40px;
+            justify-content: center;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 28px 36px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            min-width: 160px;
+            flex: 1;
+            max-width: 220px;
+        }
+        .stat-card .stat-number {
+            font-size: 40px;
+            font-weight: bold;
+            color: #166534;
+        }
+        .stat-card .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            padding: 40px;
+            background: #fff;
+        }
+        .features-section h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 32px;
+            color: #166534;
+        }
+        .features-grid {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .feature-card {
+            background: #f0fdf4;
+            border-radius: 10px;
+            padding: 28px;
+            text-align: center;
+            flex: 1;
+            min-width: 220px;
+            max-width: 280px;
+        }
+        .feature-card .icon { font-size: 40px; margin-bottom: 12px; }
+        .feature-card h3 { font-size: 18px; margin-bottom: 8px; color: #166534; }
+        .feature-card p { font-size: 14px; color: #6b7280; line-height: 1.5; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #166534;
+            color: #d1fae5;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/" class="logo">Food<span>Share</span></a>
+        <div class="navbar-links">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Reduce Waste. <span>Feed Lives.</span></h1>
+        <p>
+            Connect surplus food from donors with NGOs and volunteers who redistribute
+            it to people in need. Every meal saved is a life touched.
+        </p>
+        <div class="hero-buttons">
+            <a href="/register" class="btn btn-white">Join as Donor / NGO</a>
+            <a href="/login" class="btn btn-outline">Login</a>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="stat-card">
+            <div class="stat-number">🍱</div>
+            <div class="stat-label">Donations Created</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">🤝</div>
+            <div class="stat-label">NGOs / Volunteers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">✅</div>
+            <div class="stat-label">Meals Redistributed</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">🌍</div>
+            <div class="stat-label">Areas Covered</div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+        <h2>How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🍽️</div>
+                <h3>Donors</h3>
+                <p>Post surplus food with quantity, location and expiry. Track status in real time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🚐</div>
+                <h3>NGOs / Volunteers</h3>
+                <p>Browse available donations, accept and update pickup/delivery status.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>Admin</h3>
+                <p>Monitor all donations, manage users and view redistribution analytics.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 FoodShare — Food Waste Redistribution System | Hackathon Project
+    </footer>
+
+</body>
+</html>

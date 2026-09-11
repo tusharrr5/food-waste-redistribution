@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard — FoodShare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fdf4; color: #1a1a1a; }
+
+        /* Navbar */
+        .navbar {
+            background: #166534;
+            padding: 0 32px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo { color: #fff; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar .logo span { color: #86efac; }
+        .navbar-right { display: flex; align-items: center; gap: 20px; }
+        .navbar-right span { color: #d1fae5; font-size: 14px; }
+        .navbar-right a {
+            color: #d1fae5;
+            text-decoration: none;
+            font-size: 14px;
+            border: 1px solid #86efac;
+            padding: 5px 14px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .navbar-right a:hover { background: #14532d; }
+
+        /* Main Content */
+        .main { max-width: 1000px; margin: 36px auto; padding: 0 20px; }
+
+        .page-title { font-size: 26px; font-weight: bold; color: #166534; margin-bottom: 6px; }
+        .page-sub { color: #6b7280; font-size: 15px; margin-bottom: 28px; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 22px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+        .stat-card .num { font-size: 38px; font-weight: bold; color: #166534; }
+        .stat-card .label { font-size: 13px; color: #6b7280; margin-top: 4px; }
+
+        /* Action Card */
+        .action-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 28px 28px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            margin-bottom: 24px;
+        }
+        .action-card h3 { font-size: 18px; color: #166534; margin-bottom: 14px; }
+        .action-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-block;
+            padding: 11px 24px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+        .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn-green { background: #166534; color: #fff; }
+        .btn-outline-green {
+            background: transparent;
+            color: #166534;
+            border: 2px solid #166534;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/donor/dashboard" class="logo">Food<span>Share</span></a>
+        <div class="navbar-right">
+            <span>👤 <%= user.name %> (Donor)</span>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="page-title">Welcome, <%= user.name %>! 👋</div>
+        <div class="page-sub">Manage your food donations and track their status.</div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="num"><%= stats.total %></div>
+                <div class="label">Total Donations</div>
+            </div>
+            <div class="stat-card">
+                <div class="num"><%= stats.active %></div>
+                <div class="label">Active</div>
+            </div>
+            <div class="stat-card">
+                <div class="num"><%= stats.delivered %></div>
+                <div class="label">Delivered</div>
+            </div>
+            <div class="stat-card">
+                <div class="num"><%= stats.cancelled %></div>
+                <div class="label">Cancelled</div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-card">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+                <a href="/donor/donation/new" class="btn btn-green">🍽️ Create New Donation</a>
+                <a href="/donor/donations" class="btn btn-outline-green">📋 My Donations</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

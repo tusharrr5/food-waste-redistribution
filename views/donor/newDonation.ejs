@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Donation — FoodShare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fdf4; color: #1a1a1a; }
+
+        .navbar {
+            background: #166534; padding: 0 32px; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .navbar .logo { color: #fff; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar .logo span { color: #86efac; }
+        .navbar-right { display: flex; align-items: center; gap: 20px; }
+        .navbar-right span { color: #d1fae5; font-size: 14px; }
+        .navbar-right a {
+            color: #d1fae5; text-decoration: none; font-size: 14px;
+            border: 1px solid #86efac; padding: 5px 14px; border-radius: 4px;
+        }
+        .navbar-right a:hover { background: #14532d; }
+
+        .main { max-width: 600px; margin: 36px auto; padding: 0 20px; }
+
+        .page-title { font-size: 24px; font-weight: bold; color: #166534; margin-bottom: 6px; }
+        .page-sub { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 32px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #16a34a; }
+        textarea { resize: vertical; min-height: 80px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .btn {
+            display: inline-block; padding: 12px 28px; border-radius: 6px;
+            font-size: 15px; font-weight: bold; text-decoration: none;
+            cursor: pointer; border: none; transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.88; }
+        .btn-green { background: #166534; color: #fff; width: 100%; }
+        .btn-back {
+            display: inline-block; margin-bottom: 16px;
+            color: #6b7280; text-decoration: none; font-size: 14px;
+        }
+        .btn-back:hover { color: #166534; }
+
+        .error-msg {
+            background: #fef2f2; color: #dc2626;
+            border: 1px solid #fecaca; border-radius: 6px;
+            padding: 10px 14px; font-size: 13px; margin-bottom: 16px;
+        }
+
+        .hint { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/donor/dashboard" class="logo">Food<span>Share</span></a>
+        <div class="navbar-right">
+            <span>👤 <%= user.name %></span>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <a href="/donor/dashboard" class="btn-back">← Back to Dashboard</a>
+        <div class="page-title">🍽️ Create Donation</div>
+        <div class="page-sub">Fill in the details of the food you wish to donate.</div>
+
+        <div class="card">
+            <% if (error) { %>
+                <div class="error-msg"><%= error %></div>
+            <% } %>
+
+            <!-- Reference: mirai-lms/views/register.ejs form pattern with action/method -->
+            <form action="/donor/donation" method="POST">
+
+                <div class="form-group">
+                    <label for="foodType">Food Type</label>
+                    <input type="text" id="foodType" name="foodType" required placeholder="e.g. Cooked Rice, Vegetables, Bread">
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="text" id="quantity" name="quantity" required placeholder="e.g. 10 kg, 50 plates, 5 boxes">
+                </div>
+
+                <div class="form-group">
+                    <label for="pickupLocation">Pickup Location</label>
+                    <textarea id="pickupLocation" name="pickupLocation" required placeholder="Full address where food can be picked up"></textarea>
+                    <div class="hint">Be specific — include building, area, landmark if possible.</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="preparedAt">Prepared At</label>
+                        <input type="datetime-local" id="preparedAt" name="preparedAt" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiresAt">Expires At</label>
+                        <input type="datetime-local" id="expiresAt" name="expiresAt" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-green">✅ Post Donation</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

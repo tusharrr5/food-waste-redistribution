@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — FoodShare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0fdf4;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        .card-logo {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #166534;
+            margin-bottom: 6px;
+        }
+        .card-logo span { color: #16a34a; }
+        .card-subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+        h2 {
+            text-align: center;
+            font-size: 22px;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 16px; }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: #16a34a; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #166534;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #15803d; }
+        .error-msg {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .footer-link a { color: #166534; font-weight: 600; text-decoration: none; }
+        .footer-link a:hover { text-decoration: underline; }
+        .back-link {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .back-link a { color: #6b7280; text-decoration: none; }
+        .back-link a:hover { color: #166534; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-logo">Food<span>Share</span></div>
+        <div class="card-subtitle">Food Waste Redistribution System</div>
+
+        <h2>Login</h2>
+
+        <!-- Error message — EJS conditional, same pattern as register.ejs -->
+        <% if (error) { %>
+            <div class="error-msg"><%= error %></div>
+        <% } %>
+
+        <!-- Form — Reference: mirai-lms/views/login.ejs (adapted with styled inputs) -->
+        <form action="/login" method="POST">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}" placeholder="Enter your email" title="Please provide a valid email with a domain, e.g. user@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <p class="footer-link">
+            Don't have an account? <a href="/register">Register here</a>
+        </p>
+        <div class="back-link"><a href="/">← Back to Home</a></div>
+    </div>
+
+</body>
+</html>

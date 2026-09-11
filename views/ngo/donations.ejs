@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Donations — FoodShare</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #eff6ff; color: #1a1a1a; }
+
+        .navbar {
+            background: #1e40af; padding: 0 32px; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .navbar .logo { color: #fff; font-size: 20px; font-weight: bold; text-decoration: none; }
+        .navbar .logo span { color: #93c5fd; }
+        .navbar-right { display: flex; align-items: center; gap: 20px; }
+        .navbar-right span { color: #bfdbfe; font-size: 14px; }
+        .navbar-right a {
+            color: #bfdbfe; text-decoration: none; font-size: 14px;
+            border: 1px solid #93c5fd; padding: 5px 14px; border-radius: 4px;
+        }
+        .navbar-right a:hover { background: #1e3a8a; }
+
+        .main { max-width: 1100px; margin: 36px auto; padding: 0 20px; }
+
+        .page-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+        }
+        .page-title { font-size: 24px; font-weight: bold; color: #1e40af; }
+
+        /* Filter Tabs */
+        .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filter-link {
+            padding: 7px 18px; border-radius: 20px; font-size: 13px;
+            font-weight: 600; text-decoration: none; transition: all 0.2s;
+            background: #dbeafe; color: #1e40af;
+        }
+        .filter-link:hover { background: #bfdbfe; }
+        .filter-link.active { background: #1e40af; color: #fff; }
+
+        /* Cards Grid — Reference: adapted from Lect-13 forEach pattern */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+        }
+        .donation-card {
+            background: #fff; border-radius: 10px;
+            padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .donation-card .card-header {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+        }
+        .food-name { font-size: 17px; font-weight: bold; color: #1a1a1a; }
+        .badge {
+            display: inline-block; padding: 3px 12px; border-radius: 12px;
+            font-size: 11px; font-weight: 600; text-transform: capitalize; white-space: nowrap;
+        }
+        .badge-available  { background: #d1fae5; color: #065f46; }
+        .badge-accepted   { background: #dbeafe; color: #1e40af; }
+        .badge-pickedup   { background: #fef3c7; color: #92400e; }
+        .badge-delivered  { background: #dcfce7; color: #166534; }
+        .badge-cancelled  { background: #fee2e2; color: #991b1b; }
+
+        .info-row { font-size: 13px; color: #4b5563; display: flex; gap: 6px; align-items: flex-start; }
+        .info-row .icon { min-width: 18px; }
+
+        .card-actions { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-block; padding: 8px 18px; border-radius: 6px;
+            font-size: 13px; font-weight: bold; text-decoration: none;
+            cursor: pointer; border: none; transition: opacity 0.15s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-green  { background: #166534; color: #fff; }
+        .btn-orange { background: #d97706; color: #fff; }
+        .btn-blue   { background: #1e40af; color: #fff; }
+
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: #9ca3af;
+            background: #fff; border-radius: 10px; grid-column: 1/-1;
+        }
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="/ngo/dashboard" class="logo">Food<span>Share</span></a>
+        <div class="navbar-right">
+            <span>🤝 <%= user.name %></span>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="page-header">
+            <div class="page-title">🍱 Donations</div>
+            <a href="/ngo/dashboard" style="font-size:14px;color:#1e40af;text-decoration:none;">← Dashboard</a>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-bar">
+            <a href="/ngo/donations?filter=available" class="filter-link <%= filter === 'available' ? 'active' : '' %>">🟢 Available</a>
+            <a href="/ngo/donations?filter=mine"      class="filter-link <%= filter === 'mine'      ? 'active' : '' %>">📋 My Donations</a>
+            <a href="/ngo/donations?filter=delivered" class="filter-link <%= filter === 'delivered' ? 'active' : '' %>">✅ Delivered</a>
+            <a href="/ngo/donations?filter=all"       class="filter-link <%= filter === 'all'       ? 'active' : '' %>">📦 All</a>
+        </div>
+
+        <!-- Donation Cards — Reference: forEach loop from Lect-13/views/index.ejs -->
+        <div class="cards-grid">
+            <% if (donations.length === 0) { %>
+                <div class="empty-state">
+                    <div class="icon">🔍</div>
+                    <p>No donations found for this filter.</p>
+                </div>
+            <% } %>
+
+            <% donations.forEach((d) => { %>
+                <%
+                    let badgeClass = 'badge-available';
+                    if (d.status === 'accepted')  badgeClass = 'badge-accepted';
+                    if (d.status === 'pickedUp')  badgeClass = 'badge-pickedup';
+                    if (d.status === 'delivered') badgeClass = 'badge-delivered';
+                    if (d.status === 'cancelled') badgeClass = 'badge-cancelled';
+                %>
+                <div class="donation-card">
+                    <div class="card-header">
+                        <div class="food-name"><%= d.foodType %></div>
+                        <span class="badge <%= badgeClass %>"><%= d.status %></span>
+                    </div>
+
+                    <div class="info-row"><span class="icon">📦</span> <span><strong>Qty:</strong> <%= d.quantity %></span></div>
+                    <div class="info-row"><span class="icon">📍</span> <span><%= d.pickupLocation %></span></div>
+                    <div class="info-row"><span class="icon">🕐</span> <span><strong>Expires:</strong> <%= d.expiresAt ? new Date(d.expiresAt).toLocaleString('en-IN', {dateStyle:'short', timeStyle:'short'}) : 'N/A' %></span></div>
+                    <div class="info-row"><span class="icon">👤</span> <span>Donor: <%= d.donorName %></span></div>
+                    <% if (d.ngoName) { %>
+                        <div class="info-row"><span class="icon">🤝</span> <span>NGO: <%= d.ngoName %></span></div>
+                    <% } %>
+
+                    <!-- Action buttons based on status -->
+                    <div class="card-actions">
+                        <% if (d.status === 'available') { %>
+                            <form action="/ngo/donation/<%= d._id %>/accept" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-green">✅ Accept</button>
+                            </form>
+                        <% } %>
+
+                        <% if (d.status === 'accepted' && d.ngo && d.ngo.toString() === user.userId) { %>
+                            <form action="/ngo/donation/<%= d._id %>/pickup" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-orange">🚐 Mark Picked Up</button>
+                            </form>
+                        <% } %>
+
+                        <% if (d.status === 'pickedUp' && d.ngo && d.ngo.toString() === user.userId) { %>
+                            <form action="/ngo/donation/<%= d._id %>/deliver" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-blue">🏠 Mark Delivered</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+</body>
+</html>
