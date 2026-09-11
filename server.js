@@ -40,8 +40,17 @@ app.use(express.static("public"));
 // Reference: mirai-lms/server.js lines 33-35 (adapted to use .env)
 // ==========================================
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB connected successfully"))
-    .catch((err) => console.error("MongoDB connection error:", err.message));
+    .then(() => {
+        console.log("MongoDB connected successfully");
+        // Start server only AFTER database is connected
+        app.listen(process.env.PORT || 3000, () => {
+            console.log(`Server is running on port ${process.env.PORT || 3000}`);
+        });
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err.message);
+        process.exit(1); // Exit with failure if connection fails
+    });
 
 // ==========================================
 // 4. ROUTES
@@ -64,10 +73,3 @@ app.use("/ngo", ngoRoutes);
 // Admin routes: /admin/...
 app.use("/admin", adminRoutes);
 
-// ==========================================
-// 5. START SERVER
-// Reference: mirai-lms/server.js lines 166-168
-// ==========================================
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 3000}`);
-});
