@@ -18,28 +18,29 @@ const seedAdmin = async () => {
             process.exit(1);
         }
 
-        // Check if admin already exists
-        const existingAdmin = await User.findOne({ email: adminEmail });
-        
-        if (existingAdmin) {
-            console.log("Admin user already exists. Skipping creation.");
-            process.exit(0);
-        }
-
         // Hash the admin password securely
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(adminPassword, saltRounds);
 
-        // Create the admin user
-        const adminUser = new User({
-            name: "System Admin",
-            email: adminEmail,
-            password: hashedPassword,
-            role: "admin"
-        });
+        // Check if admin already exists
+        const existingAdmin = await User.findOne({ email: adminEmail });
+        
+        if (existingAdmin) {
+            existingAdmin.password = hashedPassword;
+            await existingAdmin.save();
+            console.log("Admin user already exists. Password successfully updated.");
+        } else {
+            // Create the admin user
+            const adminUser = new User({
+                name: "System Admin",
+                email: adminEmail,
+                password: hashedPassword,
+                role: "admin"
+            });
+            await adminUser.save();
+            console.log("Admin user created successfully!");
+        }
 
-        await adminUser.save();
-        console.log("Admin user created successfully!");
         
         process.exit(0);
     } catch (err) {
